@@ -90,6 +90,9 @@
                     <input type="text" id="news-search" placeholder="Buscar notícias por título...">
                     <div class="filter-buttons">
                         <button class="filter-btn active" data-source="all">Todas</button>
+                        <button class="filter-btn" data-source="copa2027">Copa 2027</button>
+                        <button class="filter-btn" data-source="FIFA.com">FIFA.com</button>
+                        <button class="filter-btn" data-source="CazéTV">CazéTV</button>
                         <button class="filter-btn" data-source="ge.globo">ge.globo</button>
                         <button class="filter-btn" data-source="Agência Brasil">Agência Brasil</button>
                     </div>
@@ -104,14 +107,31 @@
 
         <!-- Ticket Alerts Newsletter -->
         <section class="section" id="section-newsletter">
-            <div class="newsletter-card">
-                <h3>Fique por dentro dos ingressos e novidades</h3>
-                <p>Cadastre seu e-mail e receba alertas imediatos sobre as vendas de ingressos para a Copa 2027.</p>
-                <form id="newsletter-form" class="newsletter-form">
-                    <input type="email" id="newsletter-email" placeholder="Digite seu melhor e-mail" required>
-                    <button type="submit" class="btn btn-primary" id="btn-subscribe">Cadastrar Alerta</button>
-                </form>
-                <p id="newsletter-feedback" class="feedback-message hidden"></p>
+            <div class="newsletter-container-flex">
+                <div class="newsletter-card">
+                    <h3>Fique por dentro dos ingressos e novidades</h3>
+                    <p>Cadastre seu e-mail e receba alertas imediatos sobre as vendas de ingressos para a Copa 2027.</p>
+                    <form id="newsletter-form" class="newsletter-form">
+                        <input type="email" id="newsletter-email" placeholder="Digite seu melhor e-mail" required>
+                        <button type="submit" class="btn btn-primary" id="btn-subscribe">Cadastrar Alerta</button>
+                    </form>
+                    <p id="newsletter-feedback" class="feedback-message hidden"></p>
+                </div>
+                
+                <div class="stat-card-container">
+                    <div class="stat-card-outer">
+                        <div class="stat-card-dot"></div>
+                        <div class="stat-card-inner">
+                            <div class="stat-card-ray"></div>
+                            <div class="text" id="visit-count">...</div>
+                            <div style="font-family: var(--font-title); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; color: var(--accent-gold); margin-top: 0.25rem;">Acessos ao Portal</div>
+                            <div class="stat-card-line stat-card-topl"></div>
+                            <div class="stat-card-line stat-card-leftl"></div>
+                            <div class="stat-card-line stat-card-bottoml"></div>
+                            <div class="stat-card-line stat-card-rightl"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>

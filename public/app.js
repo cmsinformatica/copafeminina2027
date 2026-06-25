@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTrivia();
     fetchNews();
     initNewsletter();
+    fetchVisits();
 });
 
 function initCountdown() {
@@ -189,17 +190,15 @@ function renderNews(newsItems) {
             day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
         });
         return `
-            <article class="news-card">
-                <div>
+            <a href="${item.link}" target="_blank" class="news-card-link">
+                <article class="news-card">
                     <div class="news-meta">
                         <span class="news-source-tag">${item.source}</span>
                         <span>${formattedDate}</span>
                     </div>
                     <h3 class="news-card-title">${item.title}</h3>
-                    <p class="news-card-desc">${item.contentSnippet}</p>
-                </div>
-                <a href="${item.link}" target="_blank" class="news-link">Ler notícia completa →</a>
-            </article>
+                </article>
+            </a>
         `;
     }).join('');
 }
@@ -212,11 +211,50 @@ function filterNews() {
     const filtered = activeNews.filter(item => {
         const matchesQuery = item.title.toLowerCase().includes(query) || 
                              item.contentSnippet.toLowerCase().includes(query);
-        const matchesSource = sourceFilter === 'all' || item.source === sourceFilter;
+        let matchesSource = false;
+        if (sourceFilter === 'all') {
+            matchesSource = true;
+        } else if (sourceFilter === 'copa2027') {
+            const titleLower = item.title.toLowerCase();
+            const snippetLower = item.contentSnippet.toLowerCase();
+            matchesSource = titleLower.includes('2027') || 
+                            titleLower.includes('copa do mundo') || 
+                            titleLower.includes('mundial') || 
+                            titleLower.includes('copa') ||
+                            snippetLower.includes('2027') || 
+                            snippetLower.includes('copa do mundo') || 
+                            snippetLower.includes('mundial') ||
+                            snippetLower.includes('copa');
+        } else {
+            matchesSource = item.source === sourceFilter;
+        }
         return matchesQuery && matchesSource;
     });
 
     renderNews(filtered);
+}
+
+async function fetchVisits() {
+    const visitEl = document.getElementById('visit-count');
+    try {
+        const res = await fetch('/api/visits');
+        if (!res.ok) throw new Error('Falha ao buscar acessos');
+        const data = await res.json();
+        visitEl.textContent = formatNumber(data.count);
+    } catch (err) {
+        console.error(err);
+        visitEl.textContent = '1';
+    }
+}
+
+function formatNumber(num) {
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    }
+    return String(num);
 }
 
 function initNewsletter() {

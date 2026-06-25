@@ -4,6 +4,8 @@ const parser = new Parser();
 
 const RSS_FEEDS = {
   ge: 'https://ge.globo.com/rss/futebol/futebol-feminino/',
+  fifa: 'https://news.google.com/rss/search?q=site:fifa.com+Copa+do+Mundo+Feminina&hl=pt-BR&gl=BR&ceid=BR:pt-419',
+  cazetv: 'https://www.youtube.com/feeds/videos.xml?channel_id=UCZiYbVptd3PVPf4f6eR6UaQ',
   ebc: 'https://agenciabrasil.ebc.com.br/rss/geral/feed.xml'
 };
 
@@ -39,6 +41,53 @@ export async function fetchAndNormalizeNews() {
     console.error('Erro ao ler feed ge.globo:', err.message);
   }
 
+  // Buscar FIFA (via Google News indexado do site:fifa.com)
+  try {
+    const feedFifa = await parser.parseURL(RSS_FEEDS.fifa);
+    feedFifa.items.forEach(item => {
+      // Limpar o título do sufixo " - FIFA" se houver
+      let cleanTitle = item.title || '';
+      if (cleanTitle.toLowerCase().endsWith(' - fifa')) {
+        cleanTitle = cleanTitle.substring(0, cleanTitle.length - 7).trim();
+      }
+      allNews.push({
+        title: cleanTitle,
+        link: item.link || '',
+        pubDate: new Date(item.pubDate || item.isoDate || now).toISOString(),
+        contentSnippet: item.contentSnippet || item.content || '',
+        source: 'FIFA.com'
+      });
+    });
+  } catch (err) {
+    console.error('Erro ao ler feed FIFA.com:', err.message);
+  }
+
+  // Buscar CazéTV (via feed RSS do canal de YouTube)
+  try {
+    const feedCaze = await parser.parseURL(RSS_FEEDS.cazetv);
+    feedCaze.items.forEach(item => {
+      const titleLower = (item.title || '').toLowerCase();
+      // Filtrar para trazer vídeos mais alinhados com Copa, Futebol ou Seleção
+      const isRelevant = KEYWORDS.some(keyword => titleLower.includes(keyword)) || 
+                         titleLower.includes('futebol') || 
+                         titleLower.includes('esporte') || 
+                         titleLower.includes('jogo') || 
+                         titleLower.includes('melhores momentos');
+      
+      if (isRelevant) {
+        allNews.push({
+          title: item.title || '',
+          link: item.link || '',
+          pubDate: new Date(item.pubDate || item.isoDate || now).toISOString(),
+          contentSnippet: 'Novo vídeo ou transmissão ao vivo no canal oficial da CazéTV cobrindo esportes e futebol.',
+          source: 'CazéTV'
+        });
+      }
+    });
+  } catch (err) {
+    console.error('Erro ao ler feed CazéTV:', err.message);
+  }
+
   // Buscar EBC e filtrar
   try {
     const feedEbc = await parser.parseURL(RSS_FEEDS.ebc);
@@ -64,20 +113,20 @@ export async function fetchAndNormalizeNews() {
     console.error('Erro ao ler feed EBC:', err.message);
   }
 
-  // Se falhar em buscar ambos, retornar dados mockados de backup
+  // Se falhar em buscar todos, retornar dados mockados de backup
   if (allNews.length === 0) {
     allNews.push(
       {
         title: "Copa do Mundo Feminina de 2027: Brasil celebra contagem regressiva de um ano",
         link: "https://www.fifa.com",
-        pubDate: new Date(now - 1000 * 60 * 60 * 2).toISOString(), // 2h atrás
+        pubDate: new Date(now - 1000 * 60 * 60 * 2).toISOString(),
         contentSnippet: "As cidades-sede brasileiras iluminaram pontos turísticos e realizaram ativações para celebrar a contagem regressiva oficial.",
         source: "FIFA Oficial"
       },
       {
         title: "Arthur Elias projeta renovação e preparação para a Copa no Brasil",
         link: "https://ge.globo.com",
-        pubDate: new Date(now - 1000 * 60 * 60 * 6).toISOString(), // 6h atrás
+        pubDate: new Date(now - 1000 * 60 * 60 * 6).toISOString(),
         contentSnippet: "O técnico da seleção feminina destaca a importância do legado e do entrosamento para buscar o título inédito.",
         source: "ge.globo"
       }
