@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portal oficial com contagem regressiva de 1 ano para o início da Copa do Mundo Feminina da FIFA 2027 no Brasil e notícias atualizadas.">
+    <title>Brasil 2027 - Portal e Contador Regressivo | Copa do Mundo Feminina</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Hero Header & Banner -->
+    <header class="hero-container" id="hero-header">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-badge">Copa do Mundo Feminina FIFA 2027™</span>
+            <h1 class="hero-title">O MUNDIAL É NO BRASIL!</h1>
+            <p class="hero-subtitle">Falta exatamente 1 ano para a bola rolar no primeiro mundial feminino da América do Sul.</p>
+            
+            <!-- Countdown Grid -->
+            <div class="countdown-wrapper" id="countdown-container">
+                <div class="countdown-card" id="card-days">
+                    <span class="countdown-value" id="days">365</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-card" id="card-hours">
+                    <span class="countdown-value" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-card" id="card-minutes">
+                    <span class="countdown-value" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-card" id="card-seconds">
+                    <span class="countdown-value" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Cidades-Sede Section -->
+        <section class="section" id="section-cities">
+            <div class="section-header">
+                <h2 class="section-title">Nossas Cidades-Sede & Estádios</h2>
+                <p class="section-desc">Conheça os 8 palcos brasileiros de alto nível que receberão as melhores jogadoras do planeta.</p>
+            </div>
+            <div class="cities-grid" id="cities-container">
+                <!-- JS dynamically populates here -->
+            </div>
+        </section>
+
+        <!-- Trivia Quiz Section -->
+        <section class="section" id="section-trivia">
+            <div class="trivia-container">
+                <div class="trivia-intro">
+                    <h2 class="trivia-title">⚽ Desafio Trivia Copa Feminina</h2>
+                    <p>Teste seus conhecimentos sobre a história dos mundiais de futebol feminino!</p>
+                </div>
+                <div class="trivia-card" id="quiz-card">
+                    <div id="quiz-question-container">
+                        <h3 id="quiz-question">Carregando pergunta...</h3>
+                        <div class="quiz-options" id="quiz-options-container">
+                            <!-- Dynamic options -->
+                        </div>
+                    </div>
+                    <div class="quiz-footer">
+                        <span id="quiz-score">Pontos: 0</span>
+                        <button id="quiz-next-btn" class="btn hidden">Próxima Pergunta</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Hub Section -->
+        <section class="section" id="section-news">
+            <div class="section-header">
+                <h2 class="section-title">Últimas Notícias da Copa</h2>
+                <p class="section-desc">Acompanhe as novidades e preparativos direto de fontes de credibilidade.</p>
+                
+                <!-- Filter bar -->
+                <div class="news-controls">
+                    <input type="text" id="news-search" placeholder="Buscar notícias por título...">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-source="all">Todas</button>
+                        <button class="filter-btn" data-source="ge.globo">ge.globo</button>
+                        <button class="filter-btn" data-source="Agência Brasil">Agência Brasil</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News List Grid -->
+            <div class="news-grid" id="news-container">
+                <div class="skeleton-news">Carregando notícias de fontes confiáveis...</div>
+            </div>
+        </section>
+
+        <!-- Ticket Alerts Newsletter -->
+        <section class="section" id="section-newsletter">
+            <div class="newsletter-card">
+                <h3>Fique por dentro dos ingressos e novidades</h3>
+                <p>Cadastre seu e-mail e receba alertas imediatos sobre as vendas de ingressos para a Copa 2027.</p>
+                <form id="newsletter-form" class="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Digite seu melhor e-mail" required>
+                    <button type="submit" class="btn btn-primary" id="btn-subscribe">Cadastrar Alerta</button>
+                </form>
+                <p id="newsletter-feedback" class="feedback-message hidden"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Portal Copa Feminina Brasil 2027. Desenvolvido para torcedores.</p>
+        <p class="footer-disclaimer">Este portal é um projeto informativo não oficial em comemoração ao futebol feminino.</p>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+</body>
+</html>
