@@ -133,12 +133,24 @@ export async function fetchAndNormalizeNews() {
     );
   }
 
+  // Filtrar apenas notícias dos últimos 3 dias (72 horas)
+  const threeDaysAgo = now - 3 * 24 * 60 * 60 * 1000;
+  let filteredNews = allNews.filter(item => {
+    return new Date(item.pubDate).getTime() >= threeDaysAgo;
+  });
+
+  // Fallback: se não houver nenhuma notícia nos últimos 3 dias, exibe as 6 notícias mais recentes gerais
+  if (filteredNews.length === 0) {
+    console.log('Nenhuma notícia encontrada nos últimos 3 dias. Exibindo as últimas 6 notícias gerais.');
+    filteredNews = allNews.slice(0, 6);
+  }
+
   // Ordenar por data mais recente
-  allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  filteredNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
 
   // Salvar cache
-  cachedNews = allNews;
+  cachedNews = filteredNews;
   cacheExpiry = now + CACHE_DURATION;
 
-  return allNews;
+  return filteredNews;
 }
