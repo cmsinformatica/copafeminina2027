@@ -8,20 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/api/health",
+      "src": "/api/(.*)",
       "dest": "server.js"
-    },
-    {
-      "src": "/api/news",
-      "dest": "server.js"
-    },
-    {
-      "src": "/api/visits",
-      "dest": "server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "public/$1"
     }
   ]
 }

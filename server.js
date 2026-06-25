@@ -51,8 +51,8 @@ app.get('/api/visits', (req, res) => {
   res.json({ count: visitCount });
 });
 
-// Somente inicia se executado diretamente
-if (process.argv[1] === __filename || process.env.NODE_ENV !== 'test') {
+// Somente inicia se executado diretamente (e fora do Vercel Serverless)
+if (process.env.VERCEL !== '1' && (process.argv[1] === __filename || process.env.NODE_ENV !== 'test')) {
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
   });
